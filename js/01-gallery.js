@@ -22,13 +22,26 @@ function openOriginalImage(event) {
   if (event.target.nodeName !== "IMG") {
     return;
   }
-  const instance = basicLightbox.create(`
+  const instance = basicLightbox.create(
+    `
     <img src="${event.target.dataset.source}" width="800" height="600">
-`);
-  instance.show();
-  document.addEventListener("keydown", (event) => {
+`,
+    {
+      onShow: () => {
+        document.addEventListener("keydown", escapeFunction);
+      },
+
+      onClose: () => {
+        document.removeEventListener("keydown", escapeFunction);
+      },
+    }
+  );
+
+  const escapeFunction = (event) => {
     if (event.key === "Escape") {
       instance.close();
     }
-  });
+  };
+
+  instance.show();
 }
