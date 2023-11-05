@@ -16,23 +16,25 @@ galleryElem === null || galleryElem === void 0 ? void 0 : galleryElem.insertAdja
 galleryElem === null || galleryElem === void 0 ? void 0 : galleryElem.addEventListener("click", openOriginalImage);
 function openOriginalImage(event) {
     event.preventDefault();
-    if (event.target.nodeName !== "IMG") {
-        return;
-    }
-    const instance = basicLightbox.create(`
+    if (event.target instanceof HTMLElement) {
+        if (event.target.nodeName !== "IMG") {
+            return;
+        }
+        const instance = basicLightbox.create(`
     <img src="${event.target.dataset.source}" width="800" height="600">
 `, {
-        onShow: () => {
-            document.addEventListener("keydown", escapeFunction);
-        },
-        onClose: () => {
-            document.removeEventListener("keydown", escapeFunction);
-        },
-    });
-    const escapeFunction = (event) => {
-        if (event.key === "Escape") {
-            instance.close();
-        }
-    };
-    instance.show();
+            onShow: () => {
+                document.addEventListener("keydown", escapeFunction);
+            },
+            onClose: () => {
+                document.removeEventListener("keydown", escapeFunction);
+            },
+        });
+        const escapeFunction = (event) => {
+            if (event.key === "Escape") {
+                instance.close();
+            }
+        };
+        instance.show();
+    }
 }

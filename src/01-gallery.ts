@@ -1,4 +1,5 @@
 import { Gallery, galleryItems } from "./gallery-items";
+declare const basicLightbox: any;
 
 const galleryElem: HTMLDivElement | null = document.querySelector(".gallery");
 const previewImg: string = galleryItems.reduce(
@@ -20,31 +21,34 @@ const previewImg: string = galleryItems.reduce(
 galleryElem?.insertAdjacentHTML("beforeend", previewImg);
 galleryElem?.addEventListener("click", openOriginalImage);
 
-function openOriginalImage(event) {
+function openOriginalImage(event: MouseEvent): void {
   event.preventDefault();
-  if (event.target.nodeName !== "IMG") {
-    return;
-  }
-  const instance = basicLightbox.create(
-    `
+  if (event.target instanceof HTMLElement) {
+    if (event.target.nodeName !== "IMG") {
+      return;
+    }
+
+    const instance = basicLightbox.create(
+      `
     <img src="${event.target.dataset.source}" width="800" height="600">
 `,
-    {
-      onShow: () => {
-        document.addEventListener("keydown", escapeFunction);
-      },
+      {
+        onShow: () => {
+          document.addEventListener("keydown", escapeFunction);
+        },
 
-      onClose: () => {
-        document.removeEventListener("keydown", escapeFunction);
-      },
-    }
-  );
+        onClose: () => {
+          document.removeEventListener("keydown", escapeFunction);
+        },
+      }
+    );
 
-  const escapeFunction = (event) => {
-    if (event.key === "Escape") {
-      instance.close();
-    }
-  };
+    const escapeFunction = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        instance.close();
+      }
+    };
 
-  instance.show();
+    instance.show();
+  }
 }
