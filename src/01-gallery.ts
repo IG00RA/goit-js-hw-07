@@ -1,10 +1,9 @@
-import { Gallery, galleryItems } from "./gallery-items";
+import { Gallery, galleryItems } from "./gallery-items.js";
 declare const basicLightbox: any;
 
 const galleryElem: HTMLDivElement | null = document.querySelector(".gallery");
-const previewImg: string = galleryItems.reduce(
-  (acc: string, item: Gallery): string => {
-    return (acc += `<div class="gallery__item">
+const previewImg: string = galleryItems.reduce((acc: string, item: Gallery) => {
+  return (acc += `<div class="gallery__item">
   <a class="gallery__link" href="${item.original}">
     <img
       class="gallery__image"
@@ -14,9 +13,7 @@ const previewImg: string = galleryItems.reduce(
     />
   </a>
 </div>`);
-  },
-  ""
-);
+}, "");
 
 galleryElem?.insertAdjacentHTML("beforeend", previewImg);
 galleryElem?.addEventListener("click", openOriginalImage);
@@ -27,7 +24,6 @@ function openOriginalImage(event: MouseEvent): void {
     if (event.target.nodeName !== "IMG") {
       return;
     }
-
     const instance = basicLightbox.create(
       `
     <img src="${event.target.dataset.source}" width="800" height="600">
@@ -42,7 +38,6 @@ function openOriginalImage(event: MouseEvent): void {
         },
       }
     );
-
     const escapeFunction = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         instance.close();

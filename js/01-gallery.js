@@ -1,4 +1,4 @@
-import { galleryItems } from "./gallery-items";
+import { galleryItems } from "./gallery-items.js";
 const galleryElem = document.querySelector(".gallery");
 const previewImg = galleryItems.reduce((acc, item) => {
     return (acc += `<div class="gallery__item">
